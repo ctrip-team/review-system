@@ -10,21 +10,21 @@ export function loginAPI(data) {
 
 export function registerAPI(data) {
     return request({
-        url: '/api/auth/register',
+        url: '/api/reviewer/register',
         method: 'POST',
         data
     })
 }
 export function getAllUsersAPI() {
     return request({
-        url: '/api/auth/allusers',
+        url: '/api/reviewer/allusers',
         method: 'GET',
     })
 }
 
 export function deleteUserAPI(userId) {
     return request({
-        url: '/api/auth/delete',
+        url: '/api/reviewer/delete',
         method: 'POST',
         data: userId
     })
@@ -32,15 +32,7 @@ export function deleteUserAPI(userId) {
 
 export function updateUserAPI(data) {
     return request({
-        url: '/api/auth/update',
-        method: 'POST',
-        data
-    })
-}
-
-export function changeSalaryAPI(data) {
-    return request({
-        url: '/api/auth/salary',
+        url: '/api/reviewer/update',
         method: 'POST',
         data
     })
