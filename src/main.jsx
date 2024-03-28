@@ -8,9 +8,9 @@ import zhCN from "antd/es/locale/zh_CN"
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <ConfigProvider locale={zhCN}>
-      <RouterProvider router={router}></RouterProvider>
-    </ConfigProvider>
-  </React.StrictMode>,
+  // <React.StrictMode>
+  <ConfigProvider locale={zhCN}>
+    <RouterProvider router={router}></RouterProvider>
+  </ConfigProvider>
+  // </React.StrictMode>,
 )

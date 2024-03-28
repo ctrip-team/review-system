@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, message, Form, Input } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import { loginAPI } from '../../apis/reviewer';
+import { loginAPI } from '../../apis/role';
 import './index.scss'
 
 function Login() {

@@ -1,5 +1,5 @@
 import React from 'react'
-import { HomeOutlined, AppstoreOutlined, UserOutlined, CheckCircleOutlined } from '@ant-design/icons';
+import { HomeOutlined, AppstoreOutlined, UserOutlined, CheckCircleOutlined, UserAddOutlined } from '@ant-design/icons';
 import { Menu } from 'antd';
 import { useLocation, useNavigate } from 'react-router';
 
@@ -23,10 +23,14 @@ const menuItems = [
         children: [
             {
                 label: '角色管理',
-                key: '/auth',
+                key: '/role',
                 icon: <UserOutlined />,
+            },
+            {
+                label: '角色创建',
+                key: '/newRole',
+                icon: <UserAddOutlined />,
             }
-            // 后续可添加用户管理之类的，可以控制某些用户行为
         ]
     }
 ]

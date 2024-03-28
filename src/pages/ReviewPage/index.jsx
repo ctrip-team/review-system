@@ -5,7 +5,7 @@ import ReviewHeader from './ReviewHeader';
 import { Outlet } from 'react-router';
 import './index.scss'
 const { Content, Sider } = Layout;
-const App = () => {
+const ReviewPage = () => {
     const { token: { colorBgContainer, borderRadiusLG } } = theme.useToken();
     return (
         <Layout>
@@ -43,4 +43,4 @@ const App = () => {
         </Layout>
     );
 };
-export default App;
+export default ReviewPage;

@@ -2,7 +2,7 @@ import { request } from '../utils/request'
 
 export function loginAPI(data) {
     return request({
-        url: '/api/reviewer/login',
+        url: '/api/role/login',
         method: 'POST',
         data
     })
@@ -10,29 +10,30 @@ export function loginAPI(data) {
 
 export function registerAPI(data) {
     return request({
-        url: '/api/reviewer/register',
+        url: '/api/role/register',
         method: 'POST',
         data
     })
 }
-export function getAllUsersAPI() {
+
+export function getRolesAPI(start, num) {
     return request({
-        url: '/api/reviewer/allusers',
+        url: `/api/role/getRoles/${start}/${num}`,
         method: 'GET',
     })
 }
 
-export function deleteUserAPI(userId) {
+export function deleteRoleAPI(username) {
     return request({
-        url: '/api/reviewer/delete',
+        url: '/api/role/delete',
         method: 'POST',
-        data: userId
+        data: { username }
     })
 }
 
 export function updateUserAPI(data) {
     return request({
-        url: '/api/reviewer/update',
+        url: '/api/role/update',
         method: 'POST',
         data
     })
