@@ -1,28 +1,30 @@
 import React from 'react'
-
-import EChartsReact from 'echarts-for-react'
+import { Bar } from '@ant-design/plots';
 
 function Home() {
-    const options = {
-        title: {
-            text: '首页可以尝试做一些图表'
-        },
-        tooltip: {},
-        xAxis: {
-            data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']
-        },
-        yAxis: {},
-        series: [
-            {
-                name: '销量',
-                type: 'bar',
-                data: [5, 20, 36, 10, 10, 20]
-            }]
-    }
+    const data = [
+        { rank: 'test1', value: 54 },
+        { rank: 'test2', value: 40 },
+        { rank: 'test3', value: 35 },
+        { rank: 'test4', value: 20 },
+        { rank: 'test5', value: 15 },
+    ];
+
+    const config = {
+        data,
+        title: '审核量排行榜',
+        xField: 'rank',
+        yField: 'value',
+        // shapeField: 'hollow',
+        colorField: 'rank',
+    };
 
 
     return (
-        <EChartsReact option={options} style={{ height: '400px' }} />
+        <>
+            <h1>欢迎回来，xxx</h1>
+            <Bar {...config} />
+        </>
     )
 }
 

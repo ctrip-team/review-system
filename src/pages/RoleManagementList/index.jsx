@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Avatar, List, message, Modal } from 'antd';
+import { Avatar, List, message, Modal, Button } from 'antd';
 import VirtualList from 'rc-virtual-list';
 import { deleteRoleAPI, getRolesAPI } from '../../apis/role';
 const ContainerHeight = 400;
@@ -38,9 +38,11 @@ const RoleManagementList = () => {
         setDeleteRole(item)
         setIsDeleteModalOpen(true)
     }
+
     const handleDeleteOk = async () => {
         const res = await deleteRoleAPI(deleteRole.username)
         message.success(res.msg)
+        start.current -= 1
         setIsDeleteModalOpen(false);
     };
 
@@ -63,7 +65,7 @@ const RoleManagementList = () => {
                     <List.Item
                         key={item.role_id}
                         actions={
-                            [<a onClick={() => { setIsEditModalOpen(true) }}>编辑</a>, <a onClick={() => handleDelete(item)}>删除</a>]
+                            [<Button type="primary" onClick={() => { setIsEditModalOpen(true) }}>编辑</Button>, <Button type="primary" danger onClick={() => handleDelete(item)}>删除</Button>]
                         }>
                         <List.Item.Meta
                             title={<a onClick={() => { setIsEditModalOpen(true) }}>{item.username}</a>}
@@ -94,7 +96,7 @@ const RoleManagementList = () => {
             >
                 <p>form表单</p>
             </Modal>
-        </List>
+        </List >
     );
 };
 export default RoleManagementList;
