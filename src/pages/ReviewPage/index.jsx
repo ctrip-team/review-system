@@ -1,24 +1,26 @@
 import React from 'react';
-import { Layout, theme } from 'antd';
+import { Layout, theme, Divider } from 'antd';
 import ReviewMenu from './ReviewMenu';
 import ReviewHeader from './ReviewHeader';
 import { Outlet } from 'react-router';
 import './index.scss'
 const { Content, Sider } = Layout;
+
 const ReviewPage = () => {
     const { token: { colorBgContainer, borderRadiusLG } } = theme.useToken();
     return (
-        <Layout>
+        <Layout className='full-screen'>
             <Sider
                 theme='light'
                 breakpoint="lg"
                 collapsedWidth="0"
                 className='sider'
             >
-                <div className="logo" >
-                    <img src="/vite.svg" alt="" />
+                <div className="logo-container" >
+                    <img className='logo' src="/logo.png" alt="" />
                     <h1>审核管理系统</h1>
                 </div>
+                <Divider style={{ margin: 0 }} />
                 <ReviewMenu />
             </Sider>
             <Layout>
@@ -43,4 +45,5 @@ const ReviewPage = () => {
         </Layout>
     );
 };
+
 export default ReviewPage;

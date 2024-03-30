@@ -1,5 +1,6 @@
 import React from 'react'
 import { Bar } from '@ant-design/plots';
+import { useSelector } from 'react-redux';
 
 function Home() {
     const data = [
@@ -18,11 +19,10 @@ function Home() {
         // shapeField: 'hollow',
         colorField: 'rank',
     };
-
-
+    const role = useSelector(state => state.role)
     return (
         <>
-            <h1>欢迎回来，xxx</h1>
+            <h1>欢迎回来，{role.roleInfo.username}</h1>
             <Bar {...config} />
         </>
     )

@@ -18,8 +18,8 @@ request.interceptors.request.use((config) => {
 
 request.interceptors.response.use((response) => {
     if (response.data.code === '2005') {
+        window.location.href = '/login';
         message.error('登录已失效，请重新登录')
-        window.location.href = '/';
         return Promise.reject('登录已失效，请重新登录');
     } else
         return response.data

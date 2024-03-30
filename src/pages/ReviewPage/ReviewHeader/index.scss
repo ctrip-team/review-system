@@ -1,3 +1,9 @@
-.xxheader {
-    background-color: pink;
+.review-header {
+    background-color: #fff;
+    margin: 0 16px;
+    border-radius: 8px;
+
+    .username-dropdown {
+        float: right;
+    }
 }

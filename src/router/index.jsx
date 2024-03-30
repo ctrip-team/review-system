@@ -14,19 +14,19 @@ const router = createBrowserRouter([
         children: [
             {
                 index: true,
-                element: <Home />
+                element: <AuthRoute><Home /></AuthRoute>
             },
             {
                 path: 'review',
-                element: <ReviewContent />
+                element: <AuthRoute><ReviewContent /></AuthRoute>
             },
             {
                 path: 'role',
-                element: <RoleManagementList />
+                element: <AuthRoute><RoleManagementList /></AuthRoute>
             },
             {
                 path: 'newrole',
-                element: <RoleCreationForm />
+                element: <AuthRoute><RoleCreationForm /></AuthRoute>
             }
         ]
     },

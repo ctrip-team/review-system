@@ -3,16 +3,20 @@ import { Button, message, Form, Input } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { loginAPI } from '../../apis/role';
 import './index.scss'
+import { setToken, setRoleInfo } from '../../store/user';
+import { useDispatch } from 'react-redux';
 
 function Login() {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const onFinish = async (values) => {
     const res = await loginAPI(values)
     console.log('res', res);
     if (res.code === 2000) {
       message.success(res.msg)
-      localStorage.setItem('role_id', res.role_id)
-      localStorage.setItem('token', res.token)
+      dispatch(setToken(res.token))
+      dispatch(setRoleInfo(res.role))
+
       navigate('/')
     } else if (res.code === 2001) {
       message.error(res.msg)
