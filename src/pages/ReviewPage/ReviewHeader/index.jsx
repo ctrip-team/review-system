@@ -20,8 +20,8 @@ function ReviewHeader() {
         }
     ];
     function handleLogOut() {
-        localStorage.removeItem('role')
-
+        localStorage.removeItem('role_id')
+        localStorage.removeItem('token')
         navigate('/login')
         message.success('登出成功')
     }

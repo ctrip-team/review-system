@@ -11,7 +11,8 @@ function Login() {
     console.log('res', res);
     if (res.code === 2000) {
       message.success(res.msg)
-      localStorage.setItem('reviewer_id', res.reviewer_id)
+      localStorage.setItem('role_id', res.role_id)
+      localStorage.setItem('token', res.token)
       navigate('/')
     } else if (res.code === 2001) {
       message.error(res.msg)
