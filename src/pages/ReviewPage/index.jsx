@@ -7,7 +7,7 @@ import './index.scss'
 const { Content, Sider } = Layout;
 
 const ReviewPage = () => {
-    const { token: { colorBgContainer, borderRadiusLG } } = theme.useToken();
+    const { token: { colorBgContainer, borderRadiusLG, colorTextBase } } = theme.useToken();
     return (
         <Layout className='full-screen'>
             <Sider
@@ -18,7 +18,7 @@ const ReviewPage = () => {
             >
                 <div className="logo-container" >
                     <img className='logo' src="/logo.png" alt="" />
-                    <h1>审核管理系统</h1>
+                    <h1 style={{ color: colorTextBase }}>审核管理系统</h1>
                 </div>
                 <Divider style={{ margin: 0 }} />
                 <ReviewMenu />

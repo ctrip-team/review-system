@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, message, Form, Input } from 'antd';
+import { Button, message, Form, Input, ConfigProvider, theme } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { loginAPI } from '../../apis/role';
 import './index.scss'
@@ -7,6 +7,8 @@ import { setToken, setRoleInfo } from '../../store/user';
 import { useDispatch } from 'react-redux';
 
 function Login() {
+  const { token: { colorBgContainer, colorTextBase } } = theme.useToken();
+
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const onFinish = async (values) => {
@@ -23,8 +25,8 @@ function Login() {
     }
   };
   return (
-    <div className='login-container'>
-      <h1>审核管理系统</h1>
+    <div className='login-container' style={{ background: colorBgContainer }}>
+      <h1 style={{ color: colorTextBase }}>审核管理系统</h1>
       <Form
         name="loginForm"
         className='login-form'
@@ -79,7 +81,6 @@ function Login() {
         </Form.Item>
       </Form>
     </div>
-
   )
 }
 

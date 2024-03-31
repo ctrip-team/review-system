@@ -1,9 +1,8 @@
 .review-header {
-    background-color: #fff;
     margin: 0 16px;
     border-radius: 8px;
-
-    .username-dropdown {
-        float: right;
-    }
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 20px;
 }
