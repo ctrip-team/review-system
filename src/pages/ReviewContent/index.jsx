@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Table, Space, Tag, Image, Modal, Form, Select, Input, Button } from 'antd';
 import { deleteTravelAPI, getTravelsAPI, passTravelAPI, rejectTravelAPI } from '../../apis/travel';
+import { useSelector } from 'react-redux';
 const { Column } = Table;
 
 const onShowSizeChange = (current, pageSize) => {
@@ -12,6 +13,7 @@ function ReviewContent() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [deleteId, setDeletedId] = useState('')
     const [form] = Form.useForm()
+    const { roleInfo: { is_admin } } = useSelector(state => state.role)
 
     const handleOk = () => {
         setIsModalOpen(false);
@@ -117,7 +119,7 @@ function ReviewContent() {
                         <Space size="middle">
                             <a onClick={() => handlePass(record)}>通过</a>
                             <a onClick={() => handleReject(record)}>拒绝</a>
-                            <a onClick={() => handleDelete(record)}>删除</a>
+                            {is_admin ? <a onClick={() => handleDelete(record)}>删除</a> : null}
                         </Space>
                     )}
                 />
