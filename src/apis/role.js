@@ -23,6 +23,13 @@ export function getRolesAPI(start, num) {
     })
 }
 
+export function getTopAPI() {
+    return request({
+        url: `/api/role/getTop`,
+        method: 'GET',
+    })
+}
+
 export function deleteRoleAPI(username) {
     return request({
         url: '/api/role/delete',

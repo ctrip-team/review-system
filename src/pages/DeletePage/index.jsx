@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { Table, Space, Tag, Image, Modal, Form, Select, Input, Button, message } from 'antd';
+import { Table, Space, Tag, Image, Modal, Input, message } from 'antd';
 import { getDeleteTravelsAPI, recoverTravelAPI } from '../../apis/travel';
-import { useSelector } from 'react-redux';
 const { Column } = Table;
 const { TextArea } = Input;
 const onShowSizeChange = (current, pageSize) => {
