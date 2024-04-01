@@ -1,0 +1,27 @@
+.richTextContainer {
+    margin: auto;
+    max-height: 100px;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    cursor: pointer;
+}
+
+// 滚动条样式
+.contentModal::-webkit-scrollbar-track-piece {
+    background: #EEEEEE;
+    border-radius: 4px;
+}
+
+.contentModal::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.contentModal::-webkit-scrollbar-thumb {
+    background: #999999;
+    border-radius: 4px;
+}

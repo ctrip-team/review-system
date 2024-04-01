@@ -10,7 +10,7 @@ const { Header } = Layout;
 
 
 function ReviewHeader() {
-    const { token: { colorBgBase } } = theme.useToken();
+    const { token: { colorBgContainer } } = theme.useToken();
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const role = useSelector(state => state.role)
@@ -37,8 +37,7 @@ function ReviewHeader() {
         dispatch(setDarkMode(e))
     }
     return (
-
-        <Header className='review-header' style={{ background: colorBgBase }}>
+        <Header className='review-header' style={{ background: colorBgContainer }}>
             <Switch checkedChildren="暗黑" unCheckedChildren="明亮" onChange={changeDarkMode} defaultChecked={dark.isDarkMode} />
             <Dropdown
                 menu={{
