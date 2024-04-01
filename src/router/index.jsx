@@ -6,6 +6,7 @@ import RoleCreationForm from '../pages/RoleCreationForm'
 import NotFound from '../pages/NotFound'
 import ReviewPage from '../pages/ReviewPage'
 import ReviewContent from "../pages/ReviewContent";
+import DeletePage from "../pages/DeletePage";
 import AuthRoute from '../components/AuthRoute'
 const router = createBrowserRouter([
     {
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
             {
                 path: 'review',
                 element: <AuthRoute><ReviewContent /></AuthRoute>
+            },
+            {
+                path: 'delete',
+                element: <AuthRoute><DeletePage /></AuthRoute>
             },
             {
                 path: 'role',

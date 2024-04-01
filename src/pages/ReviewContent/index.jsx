@@ -70,6 +70,7 @@ function ReviewContent() {
         const res = await deleteTravelAPI(deleteId)
         message.success(res.msg)
         setIsDeleteModalOpen(false)
+        setOperationType('delete')
     }
 
 
@@ -195,7 +196,6 @@ function ReviewContent() {
                     )}
                 />
             </Table>
-
 
             <Modal title="拒绝通过" footer={null} open={isRejectModalOpen} onCancel={() => setIsRejectModalOpen(false)}>
                 <Form

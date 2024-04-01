@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { HomeOutlined, AppstoreOutlined, UserOutlined, CheckCircleOutlined, UserAddOutlined } from '@ant-design/icons';
+import { HomeOutlined, AppstoreOutlined, UserOutlined, CheckCircleOutlined, UserAddOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import { Menu } from 'antd';
 import { useLocation, useNavigate } from 'react-router';
 import { useSelector } from 'react-redux';
@@ -24,6 +24,8 @@ function ReviewMenu() {
         const path = location.pathname
         if (path === '/role' || path === '/newRole') {
             setOpenKeys(['/system'])
+        } else if (path === '/review' || path === '/delete') {
+            setOpenKeys(['/content'])
         }
     }, [])
 
@@ -35,14 +37,22 @@ function ReviewMenu() {
                 label: '首页',
                 key: '/',
                 icon: <HomeOutlined />,
-            },
-            {
-                label: '内容审核',
-                key: '/review',
-                icon: <CheckCircleOutlined />,
-            },
-
+            }
         )
+
+        const contentManage = {
+            label: '游记管理',
+            key: '/content',
+            icon: <CheckCircleOutlined />,
+            children: [
+                {
+                    label: '游记审核',
+                    key: '/review',
+                    icon: <CheckCircleOutlined />,
+                }
+            ]
+        }
+
         const systemManage = {
             label: '系统管理',
             key: '/system',
@@ -55,7 +65,15 @@ function ReviewMenu() {
                 }
             ]
         }
+        
         if (is_admin) {
+            contentManage.children.push(
+                {
+                    label: '已删除',
+                    key: '/delete',
+                    icon: <CloseCircleOutlined />,
+                }
+            )
             systemManage.children.push(
                 {
                     label: '角色创建',
@@ -64,6 +82,7 @@ function ReviewMenu() {
                 }
             )
         }
+        items.push(contentManage)
         items.push(systemManage)
         setMenuItems(items)
     }, [])
