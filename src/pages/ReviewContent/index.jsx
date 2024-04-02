@@ -2,6 +2,20 @@ import React, { useState, useEffect } from 'react'
 import { Table, Space, Tag, Image, Modal, Form, Select, Input, Button, message } from 'antd';
 import { deleteTravelAPI, getTravelsAPI, passTravelAPI, rejectTravelAPI } from '../../apis/travel';
 import { useSelector } from 'react-redux';
+import {
+    Player,
+    ControlBar,
+    PlayToggle, // PlayToggle 播放/暂停按钮 若需禁止加 disabled
+    ReplayControl, // 后退按钮
+    ForwardControl,  // 前进按钮
+    CurrentTimeDisplay,
+    TimeDivider,
+    PlaybackRateMenuButton,  // 倍速播放选项
+    VolumeMenuButton,
+    BigPlayButton
+} from 'video-react';
+
+import "video-react/dist/video-react.css";
 import './index.scss'
 const { Column } = Table;
 const { TextArea } = Input;
@@ -27,6 +41,7 @@ function ReviewContent() {
         async function getTravels() {
             const res = await getTravelsAPI()
             setTravelList(res.travelList)
+            console.log(res.travelList);
         }
         getTravels()
     }, [operationType])
@@ -96,12 +111,34 @@ function ReviewContent() {
                     align="center"
                     render={
                         (_, record) => {
-                            return (
-                                <Image.PreviewGroup
-                                    items={record.imgs}>
-                                    <Image width={200} src={record.imgs[0]} />
-                                </Image.PreviewGroup>
-                            )
+                            if (record.video_url) {
+                                console.log('真有视频咋办');
+                                return (
+                                    <Player
+                                        playsInline
+                                        poster="https://video-react.js.org/assets/poster.png"
+                                        src={record.video_url}
+                                    >
+                                        <BigPlayButton position="center" />
+                                        <ControlBar autoHide={false}>
+                                            <ForwardControl seconds={5} order={3.1} />
+                                            <ReplayControl seconds={5} order={1.1} />
+                                            <PlayToggle />
+                                            <CurrentTimeDisplay order={4.1} />
+                                            <TimeDivider order={4.2} />
+                                            <PlaybackRateMenuButton rates={[2, 1.5, 1, 0.5]} order={7.1} />
+                                            <VolumeMenuButton />
+                                        </ControlBar>
+                                    </Player>
+                                )
+                            } else {
+                                return (
+                                    <Image.PreviewGroup
+                                        items={record.imgs}>
+                                        <Image width={200} src={record.imgs[0]} />
+                                    </Image.PreviewGroup>
+                                )
+                            }
                         }
                     }
                 />
