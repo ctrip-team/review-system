@@ -116,7 +116,6 @@ function ReviewContent() {
                                 return (
                                     <Player
                                         playsInline
-                                        poster="https://video-react.js.org/assets/poster.png"
                                         src={record.video_url}
                                     >
                                         <BigPlayButton position="center" />
