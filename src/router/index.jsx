@@ -1,43 +1,85 @@
 import { createBrowserRouter } from "react-router-dom";
-import Login from '../pages/Login'
-import Home from '../pages/Home'
-import RoleManagementList from '../pages/RoleManagementList'
-import RoleCreationForm from '../pages/RoleCreationForm'
-import NotFound from '../pages/NotFound'
-import ReviewPage from '../pages/ReviewPage'
-import ReviewContent from "../pages/ReviewContent";
-import DeletePage from "../pages/DeletePage";
+import React, { lazy, Suspense } from 'react';
+const Login = lazy(() => import('../pages/Login'));
+const Home = lazy(() => import('../pages/Home'));
+const RoleManagementList = lazy(() => import('../pages/RoleManagementList'));
+const RoleCreationForm = lazy(() => import('../pages/RoleCreationForm'));
+const ReviewPage = lazy(() => import('../pages/ReviewPage'));
+const ReviewContent = lazy(() => import("../pages/ReviewContent"));
+const DeletePage = lazy(() => import("../pages/DeletePage"));
 import AuthRoute from '../components/AuthRoute'
+import NotFound from '../pages/NotFound'
+
 const router = createBrowserRouter([
     {
         path: '/',
-        element: <AuthRoute><ReviewPage /></AuthRoute>,
+        element: (
+            <AuthRoute>
+                <Suspense fallback={<div>Loading...</div>}>
+                    <ReviewPage />
+                </Suspense>
+            </AuthRoute>
+        ),
         children: [
             {
                 index: true,
-                element: <AuthRoute><Home /></AuthRoute>
+                element: (
+                    <AuthRoute>
+                        <Suspense fallback={<div>Loading...</div>}>
+                            <Home />
+                        </Suspense>
+                    </AuthRoute>
+                )
             },
             {
                 path: 'review',
-                element: <AuthRoute><ReviewContent /></AuthRoute>
+                element: (
+                    <AuthRoute>
+                        <Suspense fallback={<div>Loading...</div>}>
+                            <ReviewContent />
+                        </Suspense>
+                    </AuthRoute>
+                )
             },
             {
                 path: 'delete',
-                element: <AuthRoute><DeletePage /></AuthRoute>
+                element: (
+                    <AuthRoute>
+                        <Suspense fallback={<div>Loading...</div>}>
+                            <DeletePage />
+                        </Suspense>
+                    </AuthRoute>
+                )
             },
             {
                 path: 'role',
-                element: <AuthRoute><RoleManagementList /></AuthRoute>
+                element: (
+                    <AuthRoute>
+                        <Suspense fallback={<div>Loading...</div>}>
+                            <RoleManagementList />
+                        </Suspense>
+                    </AuthRoute>
+                )
             },
             {
                 path: 'newrole',
-                element: <AuthRoute><RoleCreationForm /></AuthRoute>
+                element: (
+                    <AuthRoute>
+                        <Suspense fallback={<div>Loading...</div>}>
+                            <RoleCreationForm />
+                        </Suspense>
+                    </AuthRoute>
+                )
             }
         ]
     },
     {
         path: '/login',
-        element: <Login />
+        element: (
+            <Suspense fallback={<div>Loading...</div>}>
+                <Login />
+            </Suspense>
+        )
     },
     {
         path: '*',
