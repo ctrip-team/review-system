@@ -3,7 +3,7 @@ import { Button, message, Form, Input, ConfigProvider, theme } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { loginAPI } from '../../apis/role';
 import './index.scss'
-import { setToken, setRoleInfo } from '../../store/user';
+import { setToken, setRoleInfo } from '../../store/role';
 import { useDispatch } from 'react-redux';
 
 function Login() {

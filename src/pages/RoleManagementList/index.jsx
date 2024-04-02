@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Avatar, List, message, Modal, Button } from 'antd';
+import { Form, List, message, Modal, Button, Input, Select } from 'antd';
 import VirtualList from 'rc-virtual-list';
-import { deleteRoleAPI, getRolesAPI } from '../../apis/role';
+import { deleteRoleAPI, getRolesAPI, updateRoleAPI } from '../../apis/role';
 import { useSelector } from 'react-redux';
 const ContainerHeight = 400;
 
@@ -12,7 +12,10 @@ const RoleManagementList = () => {
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [deleteRole, setDeleteRole] = useState({})
+    const [editId, setEditId] = useState('')
+
     const { roleInfo: { is_admin } } = useSelector(state => state.role)
+    const [editForm] = Form.useForm()
     const start = useRef(0)
     const appendData = async () => {
         const res = await getRolesAPI(start.current, num)
@@ -48,11 +51,21 @@ const RoleManagementList = () => {
     };
 
 
-    const handleEditOk = async () => {
-        setIsEditModalOpen(false)
+    // 处理编辑
+    const handleEdit = (item) => {
+        setIsEditModalOpen(true)
+        editForm.setFieldsValue({
+            username: item.username,
+            password: item.password,
+            role: item.is_admin ? '管理员' : '审核员'
+        })
+        setEditId(item.role_id)
     }
-
-
+    const confirmEdit = async (values) => {
+        const res = await updateRoleAPI({ ...values, role_id: editId })
+        setIsEditModalOpen(false)
+        message.success(res.msg)
+    }
     return (
         <List>
             <VirtualList
@@ -68,12 +81,12 @@ const RoleManagementList = () => {
                         actions={
                             is_admin ?
                                 [
-                                    <Button type="primary" onClick={() => { setIsEditModalOpen(true) }}>编辑</Button>,
+                                    <Button type="primary" onClick={() => handleEdit(item)}>编辑</Button>,
                                     <Button type="primary" danger onClick={() => handleDelete(item)}>删除</Button>
                                 ] : []
                         }>
                         <List.Item.Meta
-                            title={<a onClick={() => { setIsEditModalOpen(true) }}>{item.username}</a>}
+                            title={<a onClick={() => handleEdit(item)}>{item.username}</a>}
                             description={item.is_admin ? '管理员' : '审核员'}
                         />
                     </List.Item>
@@ -94,12 +107,80 @@ const RoleManagementList = () => {
             <Modal
                 title="编辑角色"
                 open={isEditModalOpen}
-                onOk={handleEditOk}
                 onCancel={() => { setIsEditModalOpen(false); }}
-                okText="确认"
-                cancelText="取消"
+                footer={null}
             >
-                <p>form表单</p>
+                <Form
+                    labelCol={{
+                        span: 10,
+                    }}
+                    wrapperCol={{
+                        span: 10,
+                    }}
+                    style={{
+                        maxWidth: 400,
+                        marginTop: 24
+                    }}
+                    initialValues={{
+                        remember: true,
+                    }}
+                    onFinish={confirmEdit}
+                    autoComplete="off"
+                    form={editForm}
+                >
+                    <Form.Item
+                        label="用户名"
+                        name="username"
+                        rules={[
+                            {
+                                required: true,
+                                message: '请输入用户名!',
+                            },
+                        ]}
+                    >
+                        <Input />
+                    </Form.Item>
+
+                    <Form.Item
+                        label="密码"
+                        name="password"
+                        rules={[
+                            {
+                                required: true,
+                                message: '请输入密码！',
+                            },
+                        ]}
+                    >
+                        <Input />
+                    </Form.Item>
+
+                    <Form.Item
+                        label="角色"
+                        name="role"
+                        rules={[
+                            {
+                                required: true,
+                            },
+                        ]}
+                    >
+                        <Select>
+                            <Select.Option value="审核员">审核员</Select.Option>
+                            <Select.Option value="管理员">管理员</Select.Option>
+                        </Select>
+                    </Form.Item>
+
+
+                    <Form.Item
+                        wrapperCol={{
+                            offset: 12,
+                        }}
+                    >
+                        <Button type="primary" htmlType="submit">
+                            编辑
+                        </Button>
+                    </Form.Item>
+
+                </Form>
             </Modal>
         </List >
     );

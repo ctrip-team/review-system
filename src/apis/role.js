@@ -38,7 +38,7 @@ export function deleteRoleAPI(username) {
     })
 }
 
-export function updateUserAPI(data) {
+export function updateRoleAPI(data) {
     return request({
         url: '/api/role/update',
         method: 'POST',

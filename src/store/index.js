@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import roleReducer from "./user";
+import roleReducer from "./role";
 import darkReducer from "./dark";
 
 export default configureStore({
