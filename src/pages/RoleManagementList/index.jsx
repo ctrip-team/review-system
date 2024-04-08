@@ -3,9 +3,9 @@ import { Form, List, message, Modal, Button, Input, Select } from 'antd';
 import VirtualList from 'rc-virtual-list';
 import { deleteRoleAPI, getRolesAPI, updateRoleAPI } from '../../apis/role';
 import { useSelector } from 'react-redux';
-const ContainerHeight = 400;
+const ContainerHeight = 600;
 
-const num = 6
+const num = 10
 const RoleManagementList = () => {
     const [roles, setRoles] = useState([]);
     const [isLoadAll, setIsLoadAll] = useState(false)
@@ -45,11 +45,11 @@ const RoleManagementList = () => {
 
     const handleDeleteOk = async () => {
         const res = await deleteRoleAPI(deleteRole.username)
+        setRoles(roles.filter((item) => item.role_id !== deleteRole.role_id))
         message.success(res.msg)
         start.current -= 1
         setIsDeleteModalOpen(false);
     };
-
 
     // 处理编辑
     const handleEdit = (item) => {
@@ -63,11 +63,18 @@ const RoleManagementList = () => {
     }
     const confirmEdit = async (values) => {
         const res = await updateRoleAPI({ ...values, role_id: editId })
+        const role = roles.find(item => item.role_id === editId)
+        if (values.role === '管理员') {
+            role.is_admin = 1
+        } else {
+            role.is_admin = 0
+        }
+        setRoles(roles)
         setIsEditModalOpen(false)
         message.success(res.msg)
     }
     return (
-        <List>
+        <List bordered={true}>
             <VirtualList
                 data={roles}
                 height={ContainerHeight}
@@ -79,7 +86,7 @@ const RoleManagementList = () => {
                     <List.Item
                         key={item.role_id}
                         actions={
-                            is_admin ?
+                            is_admin && item.username !== 'admin' ?
                                 [
                                     <Button type="primary" onClick={() => handleEdit(item)}>编辑</Button>,
                                     <Button type="primary" danger onClick={() => handleDelete(item)}>删除</Button>

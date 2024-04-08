@@ -33,7 +33,7 @@ const ReviewPage = () => {
                     <div
                         style={{
                             padding: 24,
-                            minHeight: 360,
+                            height: '100%',
                             background: colorBgContainer,
                             borderRadius: borderRadiusLG,
                         }}

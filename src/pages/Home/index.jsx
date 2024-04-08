@@ -6,7 +6,6 @@ import { getTopAPI } from '../../apis/role';
 
 function Home() {
     const { isDarkMode } = useSelector(state => state.dark)
-    console.log('isDarkMode', isDarkMode);
     const [config, setConfig] = useState({})
 
     useEffect(() => {
@@ -50,7 +49,7 @@ function Home() {
             <h1>🌻欢迎回来，<span className='welcome-username'>{role.roleInfo.username}</span></h1>
             <p className='welcome-word'>“I've never met a strong person with an easy past.”</p>
             <h3>审核量排行榜</h3>
-            <Bar {...config} />
+            <div><Bar {...config} /></div>
         </>
     )
 }

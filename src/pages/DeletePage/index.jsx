@@ -1,6 +1,19 @@
 import React, { useState, useEffect } from 'react'
 import { Table, Space, Tag, Image, Modal, Input, message } from 'antd';
 import { getDeleteTravelsAPI, recoverTravelAPI } from '../../apis/travel';
+import {
+    Player,
+    ControlBar,
+    PlayToggle,
+    ReplayControl,
+    ForwardControl,
+    CurrentTimeDisplay,
+    TimeDivider,
+    PlaybackRateMenuButton,
+    VolumeMenuButton,
+    BigPlayButton
+} from 'video-react';
+import "video-react/dist/video-react.css";
 const { Column } = Table;
 const { TextArea } = Input;
 const onShowSizeChange = (current, pageSize) => {
@@ -48,7 +61,14 @@ function DeletePage() {
     }
     return (
         <>
-            <Table dataSource={deleteTravelList} pagination={{ defaultPageSize: 5, showSizeChanger: true, onShowSizeChange, pageSizeOptions: ['5', '10', '20'] }}>
+            <Table
+                bordered={true}
+                dataSource={deleteTravelList}
+                pagination={{ defaultPageSize: 5, showSizeChanger: true, onShowSizeChange, pageSizeOptions: ['5', '10', '20'] }}
+                scroll={{
+                    y: 600,
+                }}
+            >
                 <Column
                     title="图片"
                     dataIndex="imgs"
@@ -56,12 +76,33 @@ function DeletePage() {
                     align="center"
                     render={
                         (_, record) => {
-                            return (
-                                <Image.PreviewGroup
-                                    items={record.imgs}>
-                                    <Image width={200} src={record.imgs[0]} />
-                                </Image.PreviewGroup>
-                            )
+                            if (record.video_url) {
+                                return (
+                                    <Player
+                                        playsInline
+                                        src={record.video_url}
+                                        className='player'
+                                    >
+                                        <BigPlayButton position="center" />
+                                        <ControlBar autoHide={false}>
+                                            <ForwardControl seconds={5} order={3.1} />
+                                            <ReplayControl seconds={5} order={1.1} />
+                                            <PlayToggle />
+                                            <CurrentTimeDisplay order={4.1} />
+                                            <TimeDivider order={4.2} />
+                                            <PlaybackRateMenuButton rates={[2, 1.5, 1, 0.5]} order={7.1} />
+                                            <VolumeMenuButton />
+                                        </ControlBar>
+                                    </Player>
+                                )
+                            } else {
+                                return (
+                                    <Image.PreviewGroup
+                                        items={record.imgs}>
+                                        <Image width={200} src={record.imgs[0]} />
+                                    </Image.PreviewGroup>
+                                )
+                            }
                         }
                     }
                 />

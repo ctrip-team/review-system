@@ -7,11 +7,11 @@ export function getTravelsAPI() {
     })
 }
 
-export function passTravelAPI(travel_id) {
+export function passTravelAPI(data) {
     return request({
         url: `/api/travel/pass`,
         method: 'POST',
-        data: { travel_id }
+        data: data
     })
 }
 
