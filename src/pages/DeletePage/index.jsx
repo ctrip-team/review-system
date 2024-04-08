@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react'
-import { Table, Space, Tag, Image, Modal, Input, message } from 'antd';
+import React, { useState, useEffect, useRef } from 'react'
+import { Table, Space, Tag, Image, Modal, Input, message, Button } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
 import { getDeleteTravelsAPI, recoverTravelAPI } from '../../apis/travel';
 import { useSelector } from 'react-redux';
 import { WaterMark } from '@ant-design/pro-components'
@@ -16,8 +17,8 @@ import {
     BigPlayButton
 } from 'video-react';
 import "video-react/dist/video-react.css";
+import Highlighter from 'react-highlight-words';
 const { Column } = Table;
-const { TextArea } = Input;
 const onShowSizeChange = (current, pageSize) => {
     console.log(current, pageSize);
 };
@@ -30,6 +31,19 @@ function DeletePage() {
     const [operation, setOperation] = useState('')
     const [content, setContent] = useState('')
     const { roleInfo } = useSelector(state => state.role)
+
+    const [searchText, setSearchText] = useState('');
+    const [searchedColumn, setSearchedColumn] = useState('');
+    const searchInput = useRef(null);
+    const handleSearch = (selectedKeys, confirm, dataIndex) => {
+        confirm();
+        setSearchText(selectedKeys[0]);
+        setSearchedColumn(dataIndex);
+    };
+    const handleReset = (clearFilters) => {
+        clearFilters();
+        setSearchText('');
+    };
     useEffect(() => {
         async function getTravels() {
             const res = await getDeleteTravelsAPI()
@@ -60,6 +74,11 @@ function DeletePage() {
         message.success(res.msg)
         setOperation('recover')
         setRecoverModalOpen(false)
+    }
+
+    function highlightRichText(content, keyword) {
+        if (!keyword) return content;
+        return content.replace(new RegExp(`(${keyword}+)`, 'gi'), (match) => `<mark style="background-color: rgb(255, 192, 105); padding: 0px;">${match}</mark>`);
     }
     return (
         <>
@@ -114,19 +133,99 @@ function DeletePage() {
                         dataIndex="title"
                         key="title"
                         align="center"
-                        render={(_, record) => {
-                            return (
-                                <TextArea
-                                    showCount
-                                    maxLength={30}
-                                    defaultValue={record.title}
-                                    disabled
+                        width={'18%'}
+                        filterDropdown={({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
+                            <div
+                                style={{
+                                    padding: 8,
+                                }}
+                                onKeyDown={(e) => e.stopPropagation()}
+                            >
+                                <Input
+                                    ref={searchInput}
+                                    placeholder={`搜索标题`}
+                                    value={selectedKeys[0]}
+                                    onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+                                    onPressEnter={() => handleSearch(selectedKeys, confirm, 'title')}
                                     style={{
-                                        height: 80,
-                                        resize: 'none',
-                                        border: 'none'
+                                        marginBottom: 8,
+                                        display: 'block',
                                     }}
                                 />
+                                <Space>
+                                    <Button
+                                        type="primary"
+                                        onClick={() => handleSearch(selectedKeys, confirm, 'title')}
+                                        icon={<SearchOutlined />}
+                                        size="small"
+                                        style={{
+                                            width: 90,
+                                        }}
+                                    >
+                                        搜索
+                                    </Button>
+                                    <Button
+                                        onClick={() => clearFilters && handleReset(clearFilters)}
+                                        size="small"
+                                        style={{
+                                            width: 90,
+                                        }}
+                                    >
+                                        重置
+                                    </Button>
+                                    <Button
+                                        type="link"
+                                        size="small"
+                                        onClick={() => {
+                                            confirm({
+                                                closeDropdown: false,
+                                            });
+                                            setSearchText(selectedKeys[0]);
+                                            setSearchedColumn('title');
+                                        }}
+                                    >
+                                        过滤
+                                    </Button>
+                                    <Button
+                                        type="link"
+                                        size="small"
+                                        onClick={() => {
+                                            close();
+                                        }}
+                                    >
+                                        关闭
+                                    </Button>
+                                </Space>
+                            </div>
+                        )}
+                        filterIcon={(filtered) => (
+                            <SearchOutlined
+                                style={{
+                                    color: filtered ? '#1677ff' : undefined,
+                                }}
+                            />
+                        )}
+                        onFilter={(value, record) =>
+                            record['title'].toString().toLowerCase().includes(value.toLowerCase())}
+                        onFilterDropdownOpenChange={(visible) => {
+                            if (visible) {
+                                setTimeout(() => searchInput.current?.select(), 100);
+                            }
+                        }}
+                        render={(_, record) => {
+                            return searchedColumn === 'title' ? (
+                                <h3>
+                                    <Highlighter
+                                        highlightStyle={{
+                                            backgroundColor: '#ffc069',
+                                            padding: 0,
+                                        }}
+                                        searchWords={[searchText]}
+                                        autoEscape
+                                        textToHighlight={record.title ? record.title.toString() : ''}
+                                    /></h3>
+                            ) : (
+                                <h3>{record.title}</h3>
                             )
                         }}
                     />
@@ -135,9 +234,90 @@ function DeletePage() {
                         dataIndex="content"
                         key="content"
                         align="center"
-
+                        filterDropdown={({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
+                            <div
+                                style={{
+                                    padding: 8,
+                                }}
+                                onKeyDown={(e) => e.stopPropagation()}
+                            >
+                                <Input
+                                    ref={searchInput}
+                                    placeholder={`搜索文案`}
+                                    value={selectedKeys[0]}
+                                    onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+                                    onPressEnter={() => handleSearch(selectedKeys, confirm, 'content')}
+                                    style={{
+                                        marginBottom: 8,
+                                        display: 'block',
+                                    }}
+                                />
+                                <Space>
+                                    <Button
+                                        type="primary"
+                                        onClick={() => handleSearch(selectedKeys, confirm, 'content')}
+                                        icon={<SearchOutlined />}
+                                        size="small"
+                                        style={{
+                                            width: 90,
+                                        }}
+                                    >
+                                        搜索
+                                    </Button>
+                                    <Button
+                                        onClick={() => clearFilters && handleReset(clearFilters)}
+                                        size="small"
+                                        style={{
+                                            width: 90,
+                                        }}
+                                    >
+                                        重置
+                                    </Button>
+                                    <Button
+                                        type="link"
+                                        size="small"
+                                        onClick={() => {
+                                            confirm({
+                                                closeDropdown: false,
+                                            });
+                                            setSearchText(selectedKeys[0]);
+                                            setSearchedColumn('content');
+                                        }}
+                                    >
+                                        过滤
+                                    </Button>
+                                    <Button
+                                        type="link"
+                                        size="small"
+                                        onClick={() => {
+                                            close();
+                                        }}
+                                    >
+                                        关闭
+                                    </Button>
+                                </Space>
+                            </div>
+                        )}
+                        filterIcon={(filtered) => (
+                            <SearchOutlined
+                                style={{
+                                    color: filtered ? '#1677ff' : undefined,
+                                }}
+                            />
+                        )}
+                        onFilter={(value, record) =>
+                            record['content'].toString().toLowerCase().includes(value.toLowerCase())}
+                        onFilterDropdownOpenChange={(visible) => {
+                            if (visible) {
+                                setTimeout(() => searchInput.current?.select(), 100);
+                            }
+                        }}
                         render={(_, record) => {
-                            return (
+                            return searchedColumn === 'content' ? (
+                                <div className="richTextContainer" onClick={() => showAllContent(record.content)}>
+                                    <div dangerouslySetInnerHTML={{ __html: highlightRichText(record.content, searchText) }} />
+                                </div>
+                            ) : (
                                 <div className="richTextContainer" onClick={() => showAllContent(record.content)}>
                                     <div dangerouslySetInnerHTML={{ __html: record.content }} />
                                 </div>

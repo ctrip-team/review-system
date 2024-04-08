@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Form, List, message, Modal, Button, Input, Select } from 'antd';
+import { Form, List, message, Modal, Button, Input, Select, Card } from 'antd';
 import VirtualList from 'rc-virtual-list';
 import { deleteRoleAPI, getRolesAPI, updateRoleAPI } from '../../apis/role';
 import { useSelector } from 'react-redux';
@@ -8,12 +8,14 @@ const ContainerHeight = 600;
 const num = 10
 const RoleManagementList = () => {
     const [roles, setRoles] = useState([]);
+    const [admins, setAdmins] = useState([])
+    const [reviewers, setReviewers] = useState([])
     const [isLoadAll, setIsLoadAll] = useState(false)
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [deleteRole, setDeleteRole] = useState({})
     const [editId, setEditId] = useState('')
-
+    const [activeTabKey, setActiveTabKey] = useState('全部');
     const { roleInfo: { is_admin } } = useSelector(state => state.role)
     const [editForm] = Form.useForm()
     const start = useRef(0)
@@ -21,6 +23,10 @@ const RoleManagementList = () => {
         const res = await getRolesAPI(start.current, num)
         if (res.code === 2000) {
             setRoles([...roles, ...res.roles])
+            const newAdmins = res.roles.filter(item => item.is_admin === 1)
+            const newReviewers = res.roles.filter(item => item.is_admin !== 1)
+            setAdmins([...admins, ...newAdmins])
+            setReviewers([...reviewers, ...newReviewers])
             start.current += num
         } else {
             setIsLoadAll(true)
@@ -73,123 +79,153 @@ const RoleManagementList = () => {
         setIsEditModalOpen(false)
         message.success(res.msg)
     }
+
+    const tabChange = (key) => {
+        setActiveTabKey(key);
+    };
     return (
-        <List bordered={true}>
-            <VirtualList
-                data={roles}
-                height={ContainerHeight}
-                itemHeight={60}
-                itemKey="role_id"
-                onScroll={onScroll}
-            >
-                {(item) => (
-                    <List.Item
-                        key={item.role_id}
-                        actions={
-                            is_admin && item.username !== 'admin' ?
-                                [
-                                    <Button type="primary" onClick={() => handleEdit(item)}>编辑</Button>,
-                                    <Button type="primary" danger onClick={() => handleDelete(item)}>删除</Button>
-                                ] : []
-                        }>
-                        <List.Item.Meta
-                            title={<a onClick={() => handleEdit(item)}>{item.username}</a>}
-                            description={item.is_admin ? '管理员' : '审核员'}
-                        />
-                    </List.Item>
-                )}
-            </VirtualList>
-
-            <Modal
-                title="删除角色"
-                open={isDeleteModalOpen}
-                onOk={handleDeleteOk}
-                onCancel={() => { setIsDeleteModalOpen(false); }}
-                okText="确认"
-                cancelText="取消"
-            >
-                <p>你确定要删除该角色吗？</p>
-            </Modal>
-
-            <Modal
-                title="编辑角色"
-                open={isEditModalOpen}
-                onCancel={() => { setIsEditModalOpen(false); }}
-                footer={null}
-            >
-                <Form
-                    labelCol={{
-                        span: 10,
-                    }}
-                    wrapperCol={{
-                        span: 10,
-                    }}
-                    style={{
-                        maxWidth: 400,
-                        marginTop: 24
-                    }}
-                    initialValues={{
-                        remember: true,
-                    }}
-                    onFinish={confirmEdit}
-                    autoComplete="off"
-                    form={editForm}
+        <Card
+            style={{
+                width: '100%',
+            }}
+            tabList={[
+                {
+                    key: '全部',
+                    label: '全部'
+                },
+                {
+                    key: '管理员',
+                    label: '管理员'
+                },
+                {
+                    key: '审核员',
+                    label: '审核员'
+                },
+            ]}
+            activeTabKey={activeTabKey}
+            onTabChange={tabChange}
+            tabProps={{
+                size: 'middle',
+            }}
+        >
+            <List bordered={true}>
+                <VirtualList
+                    data={activeTabKey === '全部' ? roles : activeTabKey === '管理员' ? admins : reviewers}
+                    height={ContainerHeight}
+                    itemHeight={60}
+                    itemKey="role_id"
+                    onScroll={onScroll}
                 >
-                    <Form.Item
-                        label="用户名"
-                        name="username"
-                        rules={[
-                            {
-                                required: true,
-                                message: '请输入用户名!',
-                            },
-                        ]}
-                    >
-                        <Input />
-                    </Form.Item>
+                    {(item) => (
+                        <List.Item
+                            key={item.role_id}
+                            actions={
+                                is_admin && item.username !== 'admin' ?
+                                    [
+                                        <Button type="primary" onClick={() => handleEdit(item)}>编辑</Button>,
+                                        <Button type="primary" danger onClick={() => handleDelete(item)}>删除</Button>
+                                    ] : []
+                            }>
+                            <List.Item.Meta
+                                title={<a onClick={() => handleEdit(item)}>{item.username}</a>}
+                                description={item.is_admin ? '管理员' : '审核员'}
+                            />
+                        </List.Item>
+                    )}
+                </VirtualList>
 
-                    <Form.Item
-                        label="密码"
-                        name="password"
-                        rules={[
-                            {
-                                required: true,
-                                message: '请输入密码！',
-                            },
-                        ]}
-                    >
-                        <Input />
-                    </Form.Item>
+                <Modal
+                    title="删除角色"
+                    open={isDeleteModalOpen}
+                    onOk={handleDeleteOk}
+                    onCancel={() => { setIsDeleteModalOpen(false); }}
+                    okText="确认"
+                    cancelText="取消"
+                >
+                    <p>你确定要删除该角色吗？</p>
+                </Modal>
 
-                    <Form.Item
-                        label="角色"
-                        name="role"
-                        rules={[
-                            {
-                                required: true,
-                            },
-                        ]}
-                    >
-                        <Select>
-                            <Select.Option value="审核员">审核员</Select.Option>
-                            <Select.Option value="管理员">管理员</Select.Option>
-                        </Select>
-                    </Form.Item>
-
-
-                    <Form.Item
-                        wrapperCol={{
-                            offset: 12,
+                <Modal
+                    title="编辑角色"
+                    open={isEditModalOpen}
+                    onCancel={() => { setIsEditModalOpen(false); }}
+                    footer={null}
+                >
+                    <Form
+                        labelCol={{
+                            span: 10,
                         }}
+                        wrapperCol={{
+                            span: 10,
+                        }}
+                        style={{
+                            maxWidth: 400,
+                            marginTop: 24
+                        }}
+                        initialValues={{
+                            remember: true,
+                        }}
+                        onFinish={confirmEdit}
+                        autoComplete="off"
+                        form={editForm}
                     >
-                        <Button type="primary" htmlType="submit">
-                            编辑
-                        </Button>
-                    </Form.Item>
+                        <Form.Item
+                            label="用户名"
+                            name="username"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: '请输入用户名!',
+                                },
+                            ]}
+                        >
+                            <Input />
+                        </Form.Item>
 
-                </Form>
-            </Modal>
-        </List >
+                        <Form.Item
+                            label="密码"
+                            name="password"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: '请输入密码！',
+                                },
+                            ]}
+                        >
+                            <Input />
+                        </Form.Item>
+
+                        <Form.Item
+                            label="角色"
+                            name="role"
+                            rules={[
+                                {
+                                    required: true,
+                                },
+                            ]}
+                        >
+                            <Select>
+                                <Select.Option value="审核员">审核员</Select.Option>
+                                <Select.Option value="管理员">管理员</Select.Option>
+                            </Select>
+                        </Form.Item>
+
+
+                        <Form.Item
+                            wrapperCol={{
+                                offset: 12,
+                            }}
+                        >
+                            <Button type="primary" htmlType="submit">
+                                编辑
+                            </Button>
+                        </Form.Item>
+
+                    </Form>
+                </Modal>
+            </List >
+        </Card>
+
     );
 };
 export default RoleManagementList;
