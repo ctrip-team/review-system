@@ -45,3 +45,11 @@ export function recoverTravelAPI(travel_id) {
         data: { travel_id }
     })
 }
+
+export function getTravelInfoAPI(role_id) {
+    return request({
+        url: `/api/travel/getTravelInfoAPI`,
+        method: 'POST',
+        data: { role_id }
+    })
+}

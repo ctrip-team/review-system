@@ -6,3 +6,20 @@
 .welcome-word {
     font-style: italic;
 }
+
+.show-number {
+    height: 38px;
+    margin-top: 4px;
+    margin-bottom: 0;
+    overflow: hidden;
+    font-size: 30px;
+    line-height: 38px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    word-break: break-all;
+}
+
+.canvas-display{
+    display: flex;
+    justify-content: center;
+}
