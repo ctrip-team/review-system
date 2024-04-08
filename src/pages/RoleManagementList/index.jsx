@@ -52,6 +52,8 @@ const RoleManagementList = () => {
     const handleDeleteOk = async () => {
         const res = await deleteRoleAPI(deleteRole.username)
         setRoles(roles.filter((item) => item.role_id !== deleteRole.role_id))
+        setAdmins(admins.filter((item) => item.role_id !== deleteRole.role_id))
+        setReviewers(reviewers.filter((item) => item.role_id !== deleteRole.role_id))
         message.success(res.msg)
         start.current -= 1
         setIsDeleteModalOpen(false);
@@ -72,8 +74,12 @@ const RoleManagementList = () => {
         const role = roles.find(item => item.role_id === editId)
         if (values.role === '管理员') {
             role.is_admin = 1
+            setReviewers(reviewers.filter((item) => item.role_id !== editId))
+            setAdmins([...admins, role])
         } else {
             role.is_admin = 0
+            setAdmins(admins.filter((item) => item.role_id !== editId))
+            setReviewers([...reviewers, role])
         }
         setRoles(roles)
         setIsEditModalOpen(false)
