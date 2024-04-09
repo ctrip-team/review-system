@@ -3,7 +3,7 @@ import { message } from 'antd'
 
 const request = axios.create({
     baseURL: 'http://localhost:3000',
-    // baseURL: 'http://www.hyperyz.com:3000',
+    // baseURL: 'https://www.hyperyz.com:3000',
     timeout: 5000
 })
 

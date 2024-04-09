@@ -57,6 +57,7 @@ function ReviewContent() {
         async function getTravels() {
             const res = await getTravelsAPI()
             setTravelList(res.travelList)
+            console.log(res.travelList);
         }
         getTravels()
     }, [operationType])
@@ -65,7 +66,8 @@ function ReviewContent() {
     // 通过
     const handlePass = async ({ travel_id }) => {
         const res = await passTravelAPI({ travel_id, role_id: roleInfo.role_id })
-        setOperationType(`pass${travel_id}`)
+        travelList.find(item => item.travel_id === travel_id).status = '2'
+        setTravelList([...travelList])
         message.success(res.msg)
     }
 
@@ -79,7 +81,8 @@ function ReviewContent() {
         const res = await rejectTravelAPI({ reason: values.reason, travel_id: rejectId, role_id: roleInfo.role_id })
         message.success(res.msg)
         setIsRejectModalOpen(false)
-        setOperationType(`reject${rejectId}`)
+        travelList.find(item => item.travel_id === rejectId).status = '1'
+        setTravelList([...travelList])
         form.setFieldsValue({
             'reason': '',
             'quickFill': ''
@@ -100,7 +103,7 @@ function ReviewContent() {
         const res = await deleteTravelAPI(deleteId)
         message.success(res.msg)
         setIsDeleteModalOpen(false)
-        setOperationType('delete')
+        setOperationType(`delete${deleteId}`)
     }
 
     // 展示详细文案

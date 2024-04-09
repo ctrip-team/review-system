@@ -72,7 +72,7 @@ function DeletePage() {
     const confirmRecover = async () => {
         const res = await recoverTravelAPI(recoverId)
         message.success(res.msg)
-        setOperation('recover')
+        setOperation(`recover${recoverId}`)
         setRecoverModalOpen(false)
     }
 
