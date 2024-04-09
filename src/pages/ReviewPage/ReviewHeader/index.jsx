@@ -107,7 +107,7 @@ function ReviewHeader() {
                             },
                         ]}
                     >
-                        <Input />
+                        <Input disabled={roleInfo.username === 'demo'} />
                     </Form.Item>
 
                     <Form.Item
@@ -120,7 +120,7 @@ function ReviewHeader() {
                             },
                         ]}
                     >
-                        <Input />
+                        <Input disabled={roleInfo.username === 'demo'} />
                     </Form.Item>
 
                     <Form.Item

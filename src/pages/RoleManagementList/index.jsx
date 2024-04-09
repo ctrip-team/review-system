@@ -16,7 +16,8 @@ const RoleManagementList = () => {
     const [deleteRole, setDeleteRole] = useState({})
     const [editId, setEditId] = useState('')
     const [activeTabKey, setActiveTabKey] = useState('全部');
-    const { roleInfo: { is_admin } } = useSelector(state => state.role)
+    const { roleInfo } = useSelector(state => state.role)
+    const is_admin = roleInfo.is_admin
     const [editForm] = Form.useForm()
     const start = useRef(0)
     const appendData = async () => {
@@ -24,7 +25,7 @@ const RoleManagementList = () => {
         if (res.code === 2000) {
             setRoles([...roles, ...res.roles])
             const newAdmins = res.roles.filter(item => item.is_admin === 1)
-            const newReviewers = res.roles.filter(item => item.is_admin !== 1)
+            const newReviewers = res.roles.filter(item => item.is_admin === 0)
             setAdmins([...admins, ...newAdmins])
             setReviewers([...reviewers, ...newReviewers])
             start.current += num
@@ -45,6 +46,10 @@ const RoleManagementList = () => {
 
     // 处理删除
     const handleDelete = (item) => {
+        if (roleInfo.username === 'demo') {
+            message.error('游客账号没有权限')
+            return
+        }
         setDeleteRole(item)
         setIsDeleteModalOpen(true)
     }
@@ -61,6 +66,10 @@ const RoleManagementList = () => {
 
     // 处理编辑
     const handleEdit = (item) => {
+        if (roleInfo.username === 'demo') {
+            message.error('游客账号没有权限')
+            return
+        }
         setIsEditModalOpen(true)
         editForm.setFieldsValue({
             username: item.username,

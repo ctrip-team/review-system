@@ -65,6 +65,10 @@ function DeletePage() {
 
     // 处理恢复数据
     const handleRecover = ({ travel_id }) => {
+        if (roleInfo.username === 'demo') {
+            message.error('游客账号没有权限')
+            return
+        }
         setRecoverModalOpen(true)
         setRecoverId(travel_id)
     }

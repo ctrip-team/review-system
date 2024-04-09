@@ -52,7 +52,7 @@ function Login() {
             },
           ]}
         >
-          <Input />
+          <Input placeholder='游客账号：demo' />
         </Form.Item>
 
         <Form.Item
@@ -65,7 +65,7 @@ function Login() {
             },
           ]}
         >
-          <Input.Password />
+          <Input.Password placeholder='游客密码：demo' />
         </Form.Item>
 
 

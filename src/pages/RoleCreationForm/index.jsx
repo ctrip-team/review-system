@@ -1,19 +1,26 @@
 import React from 'react'
 import { Button, message, Form, Input, Select } from 'antd';
 import { registerAPI } from '../../apis/role';
+import { useSelector } from 'react-redux';
 import './index.scss'
 
-const onFinish = async (values) => {
-    const res = await registerAPI(values)
-    if (res.msg === '注册成功')
-        message.success(res.msg)
-    else
-        message.error(res.msg)
-};
+
 
 function RoleCreationForm() {
     const [form] = Form.useForm()
+    const { roleInfo } = useSelector(state => state.role)
     form.setFieldValue('role', '审核员')
+    const onFinish = async (values) => {
+        if (roleInfo.username === 'demo') {
+            message.error('游客账号没有权限')
+            return
+        }
+        const res = await registerAPI(values)
+        if (res.msg === '注册成功')
+            message.success(res.msg)
+        else
+            message.error(res.msg)
+    };
     return (
         <div className='form-container'>
             <h1 className='form-title'>角色创建</h1>

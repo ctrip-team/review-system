@@ -65,6 +65,10 @@ function ReviewContent() {
 
     // 通过
     const handlePass = async ({ travel_id }) => {
+        if (roleInfo.username === 'demo') {
+            message.error('游客账号没有权限')
+            return
+        }
         const res = await passTravelAPI({ travel_id, role_id: roleInfo.role_id })
         travelList.find(item => item.travel_id === travel_id).status = '2'
         setTravelList([...travelList])
@@ -73,6 +77,10 @@ function ReviewContent() {
 
     // 拒绝
     const handleReject = async ({ travel_id }) => {
+        if (roleInfo.username === 'demo') {
+            message.error('游客账号没有权限')
+            return
+        }
         setIsRejectModalOpen(true)
         setRejectId(travel_id)
     }
@@ -95,6 +103,10 @@ function ReviewContent() {
 
     // 删除
     const handleDelete = async ({ travel_id }) => {
+        if (roleInfo.username === 'demo') {
+            message.error('游客账号没有权限')
+            return
+        }
         setIsDeleteModalOpen(true)
         setDeletedId(travel_id)
     }
