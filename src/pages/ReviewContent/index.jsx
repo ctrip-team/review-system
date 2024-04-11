@@ -141,12 +141,12 @@ function ReviewContent() {
                     dataSource={travelList}
                     pagination={{ defaultPageSize: 5, showSizeChanger: true, onShowSizeChange, pageSizeOptions: ['5', '10', '20'] }}
                     scroll={{
-                        y: 600,
+                        y: 500,
                     }}
                 >
                     {/* 渲染图片集 */}
                     <Column
-                        title="图片"
+                        title="图片|视频"
                         dataIndex="imgs"
                         key="imgs"
                         align="center"

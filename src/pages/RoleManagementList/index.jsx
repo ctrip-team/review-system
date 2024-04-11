@@ -3,7 +3,7 @@ import { Form, List, message, Modal, Button, Input, Select, Card } from 'antd';
 import VirtualList from 'rc-virtual-list';
 import { deleteRoleAPI, getRolesAPI, updateRoleAPI } from '../../apis/role';
 import { useSelector } from 'react-redux';
-const ContainerHeight = 600;
+const ContainerHeight = 500;
 
 const num = 10
 const RoleManagementList = () => {

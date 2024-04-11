@@ -92,11 +92,11 @@ function DeletePage() {
                     dataSource={deleteTravelList}
                     pagination={{ defaultPageSize: 5, showSizeChanger: true, onShowSizeChange, pageSizeOptions: ['5', '10', '20'] }}
                     scroll={{
-                        y: 600,
+                        y: 500,
                     }}
                 >
                     <Column
-                        title="图片"
+                        title="图片|视频"
                         dataIndex="imgs"
                         key="imgs"
                         align="center"

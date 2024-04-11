@@ -8,18 +8,18 @@
 }
 
 .show-number {
-    height: 38px;
+    height: 30px;
     margin-top: 4px;
     margin-bottom: 0;
     overflow: hidden;
     font-size: 30px;
-    line-height: 38px;
+    line-height: 30px;
     white-space: nowrap;
     text-overflow: ellipsis;
     word-break: break-all;
 }
 
-.canvas-display{
+.canvas-display {
     display: flex;
     justify-content: center;
 }

@@ -82,9 +82,9 @@ function Home() {
     const role = useSelector(state => state.role)
     return (
         <>
-            <Flex gap="large" vertical>
+            <Flex gap="small" vertical>
                 <Card bordered>
-                    <h1>🌻欢迎回来，<span className='welcome-username'>{role.roleInfo.username}</span></h1>
+                    <h2>🌻欢迎回来，<span className='welcome-username'>{role.roleInfo.username}</span></h2>
                     <p className='welcome-word'>“I've never met a strong person with an easy past.”</p>
                 </Card>
 
